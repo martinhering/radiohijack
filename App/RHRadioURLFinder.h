@@ -8,18 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, RHURLResourceType) {
-	RHURLResourceTypeNone,
-    RHURLResourceTypeXSPFPlaylist,
-    RHURLResourceTypeMPEGStream,
-    RHURLResourceTypeHTTPStreamingPlaylist,
-    RHURLResourceTypeAACStream,
-};
+
+
+@class Stream;
 
 
 @interface RHRadioURLFinder : NSObject
 
-@property (nonatomic, copy) void (^didFindRadioURL)(NSURL* url, RHURLResourceType type);
+@property (nonatomic, copy) void (^didFindStream)(Stream* stream);
 
 - (void) addRequest:(NSURLRequest*)request response:(NSHTTPURLResponse*)response;
 @end

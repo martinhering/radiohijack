@@ -3,6 +3,7 @@
 #import "Common.h"
 #import "HelperTool.h"
 #import "RHRadioURLFinder.h"
+#import "Stream.h"
 
 #include <ServiceManagement/ServiceManagement.h>
 
@@ -183,9 +184,11 @@
     
     if (!self.hijacking)
     {
+        DEFINE_WEAK_SELF
+        
         self.urlFinder = [RHRadioURLFinder new];
-        self.urlFinder.didFindRadioURL = ^(NSURL* url, RHURLResourceType type) {
-            NSLog(@"didFindRadioURL %@ (%ld)", url, (long)type);
+        self.urlFinder.didFindStream = ^(Stream* stream) {
+            [weakSelf.arrayController addObject:stream];
         };
         
         
@@ -247,7 +250,7 @@
 }
 
 - (NSString*) stopButtonTitle {
-    return (self.hijacking) ? @"Stop" : @"Start";
+    return (self.hijacking) ? @"Stop Hijacking" : @"Start Hijacking";
 }
 
 - (void) snifferDidReceiveHTTPTrafficNotification:(NSNotification*)notification
@@ -280,7 +283,6 @@
                     NSURLRequest* request = [NSKeyedUnarchiver unarchiveObjectWithData:pair[@"request"]];
                     NSHTTPURLResponse* response = [NSKeyedUnarchiver unarchiveObjectWithData:pair[@"response"]];
                     
-                    //NSLog(@"request: %@, response: %@", request, response);
                     [self.urlFinder addRequest:request response:response];
                 }
                 
@@ -290,4 +292,64 @@
     }];
 }
 
+#pragma mark -
+
+- (IBAction) sendTo:(NSButton*)sender
+{
+    NSMenu* menu = [[NSMenu alloc] init];
+    
+    [menu addItemWithTitle:@"QuickTime Player" action:@selector(_sendToQuickTimePlayer:) keyEquivalent:@""];
+    [menu addItemWithTitle:@"Snowtape" action:@selector(_sendToSnowtape:) keyEquivalent:@""];
+
+    
+    NSPoint point = [sender frame].origin;
+    point.y += 1;
+    point.x += 5;
+    
+    NSPoint p = [[[sender window] contentView] convertPoint:point fromView:[sender superview]];
+    
+    NSEvent * evt = [NSEvent mouseEventWithType:NSLeftMouseDown
+                                       location:p
+                                  modifierFlags:NSLeftMouseDownMask
+                                      timestamp:0
+                                   windowNumber:[[sender window] windowNumber]
+                                        context:[[sender window] graphicsContext]
+                                    eventNumber:0
+                                     clickCount:1
+                                       pressure:1];
+    
+    [NSMenu popUpContextMenu:menu withEvent:evt forView:sender];
+}
+
+- (void) _sendToQuickTimePlayer:(NSMenuItem*)item
+{
+    #pragma unused(item)
+    
+    Stream* stream = [[self.arrayController arrangedObjects] firstObject];
+    NSString* url = [stream.URL absoluteString];
+    NSString* scriptSource = [NSString stringWithFormat:@"tell Application \"QuickTime Player\"\nopen URL \"%@\"\nend tell\n", url];
+    NSAppleScript* script = [[NSAppleScript alloc] initWithSource:scriptSource];
+    
+    NSDictionary* error;
+    [script executeAndReturnError:&error];
+    if (error) {
+        ErrLog(@"error executing script: %@", error);
+    }
+}
+
+- (void) _sendToSnowtape:(NSMenuItem*)item
+{
+    #pragma unused(item)
+    
+    Stream* stream = [[self.arrayController arrangedObjects] firstObject];
+    NSString* url = [stream.URL absoluteString];
+    NSString* scriptSource = [NSString stringWithFormat:@"tell Application \"Snowtape\"\nstart playing url \"%@\"\nend tell\n", url];
+    NSAppleScript* script = [[NSAppleScript alloc] initWithSource:scriptSource];
+    
+    NSDictionary* error;
+    [script executeAndReturnError:&error];
+    if (error) {
+        ErrLog(@"error executing script: %@", error);
+    }
+}
 @end

@@ -17,6 +17,7 @@
 		1B01ED02191113B5002CD7AB /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ED0019111395002CD7AB /* libpcap.dylib */; };
 		1B01ED041911160D002CD7AB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ED031911160D002CD7AB /* SystemConfiguration.framework */; };
 		1B01ED0A19111DB8002CD7AB /* RHRadioURLFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ED0919111DB8002CD7AB /* RHRadioURLFinder.m */; };
+		1B01ED0D19111F73002CD7AB /* Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ED0C19111F73002CD7AB /* Stream.m */; };
 		E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4CD036715E7A2C300FDC22C /* com.vemedio.RadioHijack.Sniffer */; };
 		E4C372F815E7D4D4007554D3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */; };
 		E4C372FA15E7D4D8007554D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F915E7D4D8007554D3 /* Security.framework */; };
@@ -67,6 +68,8 @@
 		1B01ED031911160D002CD7AB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1B01ED0819111DB8002CD7AB /* RHRadioURLFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHRadioURLFinder.h; sourceTree = "<group>"; };
 		1B01ED0919111DB8002CD7AB /* RHRadioURLFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RHRadioURLFinder.m; sourceTree = "<group>"; };
+		1B01ED0B19111F73002CD7AB /* Stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stream.h; sourceTree = "<group>"; };
+		1B01ED0C19111F73002CD7AB /* Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stream.m; sourceTree = "<group>"; };
 		E456726C15E7E4B80050ECAB /* Uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Uninstall.sh; sourceTree = "<group>"; };
 		E4C372E315E7CC10007554D3 /* Sniffer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Info.plist"; sourceTree = "<group>"; };
 		E4C372E415E7CC10007554D3 /* Sniffer-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Launchd.plist"; sourceTree = "<group>"; };
@@ -200,6 +203,8 @@
 				E4ED7B8A15E79B83002AD912 /* AppDelegate.m */,
 				1B01ED0819111DB8002CD7AB /* RHRadioURLFinder.h */,
 				1B01ED0919111DB8002CD7AB /* RHRadioURLFinder.m */,
+				1B01ED0B19111F73002CD7AB /* Stream.h */,
+				1B01ED0C19111F73002CD7AB /* Stream.m */,
 				1B01ECEE1910D7E9002CD7AB /* Resources */,
 			);
 			path = App;
@@ -301,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B01ED0D19111F73002CD7AB /* Stream.m in Sources */,
 				E4ED7B8B15E79B83002AD912 /* AppDelegate.m in Sources */,
 				1B01ED0A19111DB8002CD7AB /* RHRadioURLFinder.m in Sources */,
 				E4ED7B8D15E79B83002AD912 /* main.m in Sources */,
