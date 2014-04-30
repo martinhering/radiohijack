@@ -1,16 +1,14 @@
 
 
 #import "HelperTool.h"
-
 #import "Common.h"
+#import "RHSniffOperation.h"
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <errno.h>
 
 @interface HelperTool () <NSXPCListenerDelegate, SnifferProtocol>
 @property (atomic, strong, readwrite) NSXPCListener* listener;
 @property (atomic, strong) NSTimer* hostApplicationCheckTimer;
+@property (nonatomic, strong) NSOperationQueue* sniffOperationQueue;
 @end
 
 @implementation HelperTool
@@ -20,6 +18,8 @@
     self = [super init];
     if (self != nil)
     {
+        _sniffOperationQueue = [[NSOperationQueue alloc] init];
+        
         [self _hostApplicationCheck];
         _hostApplicationCheckTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(_hostApplicationCheck) userInfo:nil repeats:YES];
         
@@ -124,7 +124,22 @@
 - (void)startSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply
 {
     NSError* error = [self checkAuthorization:authData command:_cmd];
-    if (!error) {
+    if (!error)
+    {
+        NSSet* activeNetworkInterfaces = [RHSniffOperation activeNetworkInterfaces];
+        for(NSString* interface in activeNetworkInterfaces)
+        {
+            
+            RHSniffOperation* sniffOp = [[RHSniffOperation alloc] initWithNetworkInterface:interface];
+            sniffOp.didReceiveHTTPRequestResponse = ^(NSURLRequest* request, NSHTTPURLResponse* response) {
+                
+                NSLog(@"request:%@ response:%@", request, response);
+            };
+            
+            [self.sniffOperationQueue addOperation:sniffOp];
+        }
+        
+        
         NSLog(@"sniffing started");
     }
     reply(error);
@@ -133,7 +148,11 @@
 - (void)stopSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply
 {
     NSError* error = [self checkAuthorization:authData command:_cmd];
-    if (!error) {
+    if (!error)
+    {
+        for(NSOperation* op in [self.sniffOperationQueue operations]) {
+            [op cancel];
+        }
         NSLog(@"sniffing stopped");
     }
     reply(error);

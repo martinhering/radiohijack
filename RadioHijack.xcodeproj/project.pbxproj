@@ -11,6 +11,11 @@
 		1B01ECED1910D7E4002CD7AB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B01ECEC1910D7E4002CD7AB /* MainMenu.xib */; };
 		1B01ECF419110009002CD7AB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4ED7B8315E79B83002AD912 /* Cocoa.framework */; };
 		1B01ECF519110743002CD7AB /* Sniffer-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4C372E315E7CC10007554D3 /* Sniffer-Info.plist */; };
+		1B01ECFA19111263002CD7AB /* RHSniffOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ECF719111263002CD7AB /* RHSniffOperation.mm */; };
+		1B01ECFB19111263002CD7AB /* SCNetworkAddition.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ECF819111263002CD7AB /* SCNetworkAddition.c */; };
+		1B01ECFF19111352002CD7AB /* libtins.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ECFE19111352002CD7AB /* libtins.a */; };
+		1B01ED02191113B5002CD7AB /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ED0019111395002CD7AB /* libpcap.dylib */; };
+		1B01ED041911160D002CD7AB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ED031911160D002CD7AB /* SystemConfiguration.framework */; };
 		E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4CD036715E7A2C300FDC22C /* com.vemedio.RadioHijack.Sniffer */; };
 		E4C372F815E7D4D4007554D3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */; };
 		E4C372FA15E7D4D8007554D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F915E7D4D8007554D3 /* Security.framework */; };
@@ -52,6 +57,13 @@
 		1B01ECEC1910D7E4002CD7AB /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		1B01ECEF1910D8E6002CD7AB /* RadioHijack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RadioHijack-Prefix.pch"; sourceTree = "<group>"; };
 		1B01ECF11910D9F7002CD7AB /* Sniffer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sniffer-Prefix.pch"; sourceTree = "<group>"; };
+		1B01ECF619111263002CD7AB /* RHSniffOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RHSniffOperation.h; sourceTree = "<group>"; };
+		1B01ECF719111263002CD7AB /* RHSniffOperation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RHSniffOperation.mm; sourceTree = "<group>"; };
+		1B01ECF819111263002CD7AB /* SCNetworkAddition.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SCNetworkAddition.c; sourceTree = "<group>"; };
+		1B01ECF919111263002CD7AB /* SCNetworkAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCNetworkAddition.h; sourceTree = "<group>"; };
+		1B01ECFE19111352002CD7AB /* libtins.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtins.a; path = HelperTool/libtins/libtins.a; sourceTree = "<group>"; };
+		1B01ED0019111395002CD7AB /* libpcap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpcap.dylib; path = usr/lib/libpcap.dylib; sourceTree = SDKROOT; };
+		1B01ED031911160D002CD7AB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E456726C15E7E4B80050ECAB /* Uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Uninstall.sh; sourceTree = "<group>"; };
 		E4C372E315E7CC10007554D3 /* Sniffer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Info.plist"; sourceTree = "<group>"; };
 		E4C372E415E7CC10007554D3 /* Sniffer-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Launchd.plist"; sourceTree = "<group>"; };
@@ -76,8 +88,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B01ED041911160D002CD7AB /* SystemConfiguration.framework in Frameworks */,
+				1B01ED02191113B5002CD7AB /* libpcap.dylib in Frameworks */,
 				E4CBCCE315EBA7000081DF5C /* Security.framework in Frameworks */,
 				1B01ECF419110009002CD7AB /* Cocoa.framework in Frameworks */,
+				1B01ECFF19111352002CD7AB /* libtins.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +145,10 @@
 				E4CD036C15E7A2C300FDC22C /* main.m */,
 				E4CBCCE515EBA7550081DF5C /* HelperTool.h */,
 				E4CBCCE615EBA7550081DF5C /* HelperTool.m */,
+				1B01ECF619111263002CD7AB /* RHSniffOperation.h */,
+				1B01ECF719111263002CD7AB /* RHSniffOperation.mm */,
+				1B01ECF919111263002CD7AB /* SCNetworkAddition.h */,
+				1B01ECF819111263002CD7AB /* SCNetworkAddition.c */,
 				1B01ECF01910D9BD002CD7AB /* Resources */,
 			);
 			name = Sniffer;
@@ -160,6 +179,9 @@
 		E4ED7B8215E79B83002AD912 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1B01ED031911160D002CD7AB /* SystemConfiguration.framework */,
+				1B01ED0019111395002CD7AB /* libpcap.dylib */,
+				1B01ECFE19111352002CD7AB /* libtins.a */,
 				E4ED7B8315E79B83002AD912 /* Cocoa.framework */,
 				E4C372F915E7D4D8007554D3 /* Security.framework */,
 				E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */,
@@ -262,6 +284,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B01ECFB19111263002CD7AB /* SCNetworkAddition.c in Sources */,
+				1B01ECFA19111263002CD7AB /* RHSniffOperation.mm in Sources */,
 				E4CD036D15E7A2C300FDC22C /* main.m in Sources */,
 				E4CBCCE715EBA7550081DF5C /* HelperTool.m in Sources */,
 				E4CBCCED15EBBB8D0081DF5C /* Common.m in Sources */,
@@ -292,9 +316,16 @@
 		E4CD036F15E7A2C300FDC22C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "Developer ID Application: vemedio";
 				GCC_PREFIX_HEADER = "HelperTool/Sniffer-Prefix.pch";
 				INFOPLIST_FILE = "HelperTool/Sniffer-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HelperTool",
+					"$(PROJECT_DIR)/HelperTool/libtins",
+				);
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -307,15 +338,23 @@
 				);
 				PRODUCT_NAME = com.vemedio.RadioHijack.Sniffer;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/HelperTool/libtins/include";
 			};
 			name = Debug;
 		};
 		E4CD037015E7A2C300FDC22C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "Developer ID Application: vemedio";
 				GCC_PREFIX_HEADER = "HelperTool/Sniffer-Prefix.pch";
 				INFOPLIST_FILE = "HelperTool/Sniffer-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HelperTool",
+					"$(PROJECT_DIR)/HelperTool/libtins",
+				);
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
@@ -328,6 +367,7 @@
 				);
 				PRODUCT_NAME = com.vemedio.RadioHijack.Sniffer;
 				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/HelperTool/libtins/include";
 			};
 			name = Release;
 		};
