@@ -9,17 +9,52 @@
 #import "RHRadioURLFinder.h"
 #import "Stream.h"
 
+@interface NSSet (RHRadioURLFinder)
+- (BOOL) containsPrefixOfString:(NSString*)string;
+@end
+
+@implementation NSSet (RHRadioURLFinder)
+
+- (BOOL) containsPrefixOfString:(NSString*)string
+{
+    for(NSString* element in self) {
+        if ([string hasPrefix:element]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (BOOL) containsObjectWithPrefix:(NSString*)string
+{
+    for(NSString* element in self) {
+        if ([element hasPrefix:string]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+@end
+
+#pragma mark -
+
+
 typedef NS_ENUM(NSInteger, RHContentType) {
 	RHContentTypeNone                   = 0,
     RHContentTypeXSPFPlaylist           = (1 << 8) | 1,
     RHContentTypeHTTPStreamingPlaylist  = (2 << 8) | 1,
     RHContentTypeMPEGStream             = (1 << 8) | 0,
     RHContentTypeAACStream              = (2 << 8) | 0,
+    RHContentTypeFlashStream            = (3 << 8) | 0,
 };
 
 typedef NS_ENUM(NSInteger, RHResponseType) {
     RHResponseTypeNone                  = 0,
     RHResponseTypeIcecast               = 1,
+    RHResponseTypeStreamTheWorld        = 2,
 };
 
 @interface RHRadioURLFinder ()
@@ -41,12 +76,12 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
 
 - (NSSet*) _pathExtensionsToIgnore
 {
-    return [NSSet setWithObjects:@"png", @"jpg", @"php", @"js", @"html", @"htm", @"css", @"jpeg", @"gif", @"ico", @"json", @"xml", @"asp", @"aspx", nil];
+    return [NSSet setWithObjects:@"png", @"jpg", @"php", @"js", @"html", @"htm", @"css", @"jpeg", @"gif", @"ico", @"json", @"xml", @"asp", @"aspx", @"woff", nil];
 }
 
 - (NSSet*) _mimeCodesToIgnore
 {
-    return [NSSet setWithObjects:@"text/html", @"image/png", @"image/jpg", @"application/json", @"application/x-shockwave-flash", nil];
+    return [NSSet setWithObjects:@"text/", @"image/", @"application/json", @"application/x-javascript", @"application/x-shockwave-flash", nil];
 }
 
 - (Stream*) _streamForIcecastResponse:(NSHTTPURLResponse*)response
@@ -102,6 +137,17 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     return stream;
 }
 
+- (NSURL*) _playlistURLForStreamTheWorldResponse:(NSHTTPURLResponse*)response
+{
+    NSString* identifier = [[response.URL path] substringFromIndex:1];
+    NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"http://provisioning.streamtheworld.com/pls/%@.pls", identifier]];
+    return url;
+}
+
+
+
+
+
 - (void) addRequest:(NSURLRequest*)request response:(NSHTTPURLResponse*)response
 {
     assert(self.didFindStream != nil);
@@ -116,9 +162,11 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     //NSLog(@"%@ %@", request, response);
     
     NSDictionary* responseHeaders = [response allHeaderFields];
+    NSSet* headerKeys = [NSSet setWithArray:[responseHeaders allKeys]];
+    
     NSString* responseContentType = responseHeaders[@"Content-Type"];
     
-    if ([[self _mimeCodesToIgnore] containsObject:responseContentType]) {
+    if ([[self _mimeCodesToIgnore] containsPrefixOfString:responseContentType]) {
         //NSLog(@"filted url: %@ (%@)", request.URL, pathExtension);
         return;
     }
@@ -133,6 +181,8 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
                                    @"audio/aacp" :                      @(RHContentTypeAACStream),
                                    @"audio/x-aac" :                     @(RHContentTypeAACStream),
                                    @"audio/mp4" :                       @(RHContentTypeAACStream),
+                                   
+                                   @"application/flv" :                 @(RHContentTypeFlashStream)
                                    };
     
     
@@ -140,21 +190,27 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     
     // get response type
     RHResponseType responseType = RHResponseTypeNone;
-    if (responseHeaders[@"icy-name"] != nil) {
+    if ([headerKeys containsObjectWithPrefix:@"icy-"]) {
         responseType = RHResponseTypeIcecast;
+    }
+    else if ([[response.URL absoluteString] rangeOfString:@"live.streamtheworld.com"].location != NSNotFound) {
+        responseType = RHResponseTypeStreamTheWorld;
     }
     
     Stream* stream;
     
     if (contentType > RHContentTypeNone && responseType > RHResponseTypeNone)
     {
-        if (responseType == RHResponseTypeIcecast)
-        {
+        if (responseType == RHResponseTypeIcecast) {
             stream = [self _streamForIcecastResponse:response];
         }
+        else if (responseType == RHResponseTypeStreamTheWorld && contentType == RHContentTypeFlashStream) {
+            NSURL* playlistURL = [self _playlistURLForStreamTheWorldResponse:response];
+            stream = [Stream new];
+            stream.name = @"PLS file";
+            stream.URL = playlistURL;
+        }
     }
-    
-    
     
     if (stream) {
         self.didFindStream(stream);
@@ -167,3 +223,5 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
 }
 
 @end
+
+

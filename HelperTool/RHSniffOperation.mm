@@ -18,7 +18,16 @@ extern "C" {
 #import "SCNetworkAddition.h"
 };
 
+@interface RHHTTPRequestResponsePair : NSObject
+@property (nonatomic, assign) NSUInteger seq;
+@property (nonatomic, assign) NSUInteger ackSeq;
+@property (nonatomic, strong) NSURLRequest* request;
+@property (nonatomic, strong) NSMutableData* responseData;
+@property (nonatomic, assign) NSUInteger firstResponseDataSeq;
+@end
 
+@implementation RHHTTPRequestResponsePair
+@end
 
 
 using namespace Tins;
@@ -27,7 +36,6 @@ using namespace Tins;
 @property (nonatomic, strong) NSString* networkInterface;
 @property (nonatomic, strong) NSDictionary* networkInterfaceProperties;
 @property (nonatomic, strong) NSMutableDictionary* requestMap;
-@property (nonatomic, strong) NSMutableDictionary* responseDataMap;
 @end
 
 
@@ -60,7 +68,6 @@ bool handle(PDU &some_pdu);
         _networkInterfaceProperties = interfaces[networkInterface];
         
         _requestMap = [[NSMutableDictionary alloc] init];
-        _responseDataMap = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -228,66 +235,71 @@ static RHSniffOperation* me;
         if (isRequest && [tcpPayload length] > 0)
         {
             NSURLRequest* request = [self _parseHTTPRequestWithData:tcpPayload];
-            NSInteger ack = (NSInteger)tcp.ack_seq();
             if (request) {
-                [self.requestMap setObject:request forKey:@(ack)];
+                RHHTTPRequestResponsePair* requestPacket = [RHHTTPRequestResponsePair new];
+                requestPacket.seq = (NSUInteger)tcp.seq();
+                requestPacket.seq = (NSUInteger)tcp.ack_seq();
+                requestPacket.request = request;
+                requestPacket.responseData = [NSMutableData new];
+                [self.requestMap setObject:requestPacket forKey:@(requestPacket.seq)];
             }
-            
-            /*
-            if (request && self.didFindHTTPRequest) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.didFindHTTPRequest(request);
-                });
-            }
-             */
         }
         
         else if (isResponse && [tcpPayload length] > 0)
         {
-            NSInteger seq = (NSInteger)tcp.seq();
-            NSInteger ackSeq = (NSInteger)tcp.ack_seq();
+            NSUInteger seq = (NSUInteger)tcp.seq();
+            NSUInteger ackSeq = (NSUInteger)tcp.ack_seq();
             
-            NSURLRequest* request = self.requestMap[@(seq)];
+            // first packet is seq and following packets is ackSeq
+            RHHTTPRequestResponsePair* requestPacket = self.requestMap[@(ackSeq)];
             
-            if (request)
+            // only of first, rewrite for following packets
+            if (!requestPacket) {
+                requestPacket = self.requestMap[@(seq)];
+                
+                if (!requestPacket) {
+                    return;
+                }
+                
+                // rewrite seq to next packet
+                self.requestMap[@(ackSeq)] = requestPacket;
+                [self.requestMap removeObjectForKey:@(seq)];
+                
+                requestPacket.firstResponseDataSeq = seq;
+            }
+            
+            if (requestPacket)
             {
-                NSMutableData* data = self.responseDataMap[@(ackSeq)];
-                if (!data) {
-                    data = tcpPayload;
-                }
-                else {
-                    [data appendData:tcpPayload];
-                }
+                NSMutableData* data = requestPacket.responseData;
+
+                NSUInteger newDataOffset = seq - requestPacket.firstResponseDataSeq;
+                NSUInteger maxDataLengthAfterOffset = [data length]-newDataOffset > [tcpPayload length];
+                NSUInteger rangeLength = MIN(maxDataLengthAfterOffset, [tcpPayload length]);
+                [data replaceBytesInRange:NSMakeRange(newDataOffset, rangeLength) withBytes:[tcpPayload bytes] length:[tcpPayload length]];
                 
+
+                NSString* dataString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+                BOOL headerFinished = ([dataString rangeOfString:@"\r\n\r\n"].location != NSNotFound);
                 
-                NSString* tcpPayloadString = [[NSString alloc] initWithData:tcpPayload encoding:NSUTF8StringEncoding];
-                BOOL headerFinished = ([tcpPayloadString rangeOfString:@"\r\n\r\n"].location != NSNotFound);
-                
-                //NSLog(@"headerFinished: %ld   data: %ld", (long)headerFinished, [data length]);
+                //NSLog(@"headerFinished: %ld   data: %ld  dataString: %@", (long)headerFinished, [data length], dataString);
                 
                 if (headerFinished)
                 {
-                    NSHTTPURLResponse* response = [self _parseHTTPResponseWithData:data requestURL:request.URL];
+                    NSHTTPURLResponse* response = [self _parseHTTPResponseWithData:data requestURL:requestPacket.request.URL];
                     
                     if (self.didReceiveHTTPRequestResponse) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            self.didReceiveHTTPRequestResponse(request, response);
+                            self.didReceiveHTTPRequestResponse(requestPacket.request, response);
                         });
                     }
                     
-                    [self.requestMap removeObjectForKey:@(seq)];
-                    [self.responseDataMap removeObjectForKey:@(ackSeq)];
-                }
-                else
-                {
-                    self.responseDataMap[@(ackSeq)] = data;
-                    
-                    // rewrite seq to next packet
-                    self.requestMap[@(seq+[data length])] = request;
-                    [self.requestMap removeObjectForKey:@(seq)];
+                    [self.requestMap removeObjectForKey:@(ackSeq)];
                 }
             }
+            
+            //NSLog(@"self.requestMap %ld", [self.requestMap count]);
         }
+
 
 //        std::string payload(buffer.begin() + ethernet_headerSize + ip_headerSize + tcp_headerSize, buffer.end());
 //        std::cout << ip.src_addr() << ":" << tcp.sport() << " -> " << ip.dst_addr() << ":" << tcp.dport() << "  seq=" << tcp.seq() << "; ack=" << tcp.ack_seq() << "  Payload: " << payload << std::endl;
@@ -315,15 +327,9 @@ bool handle(PDU &some_pdu)
         
         me = self;
         
-        //NSSet* localAddess = [RHSniffOperation localIPv4Addresses];
-        
-        NSLog(@"started: %@", self.networkInterface);
-        
         Sniffer sniffer([self.networkInterface UTF8String], Sniffer::PROMISC);
         sniffer.sniff_loop(&handle);
-        
-        
-        NSLog(@"ended");
+
     }
     
 }
