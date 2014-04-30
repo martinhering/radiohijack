@@ -4,10 +4,9 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (nonatomic, assign, readwrite) IBOutlet NSWindow *    window;
-@property (nonatomic, assign, readwrite) IBOutlet NSTextView *  textView;
+@property (nonatomic, readonly) NSString* stopButtonTitle;
 
-- (IBAction)installAction:(id)sender;
-- (IBAction)getVersionAction:(id)sender;
-
+- (IBAction) toggleHijacking:(id)sender;
+@property (nonatomic, readonly) BOOL hijacking;
 
 @end

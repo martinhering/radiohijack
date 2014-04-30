@@ -124,12 +124,18 @@
 - (void)startSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply
 {
     NSError* error = [self checkAuthorization:authData command:_cmd];
+    if (!error) {
+        NSLog(@"sniffing started");
+    }
     reply(error);
 }
 
 - (void)stopSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply
 {
     NSError* error = [self checkAuthorization:authData command:_cmd];
+    if (!error) {
+        NSLog(@"sniffing stopped");
+    }
     reply(error);
 }
 @end

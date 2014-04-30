@@ -261,78 +261,23 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="315"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="375">
-                        <rect key="frame" x="343" y="13" width="123" height="32"/>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sfy-gt-x7J">
+                        <rect key="frame" x="14" y="267" width="70" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Install" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="381">
+                        <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="C9j-R1-xhR">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
-                            <action selector="installAction:" target="373" id="390"/>
+                            <action selector="toggleHijacking:" target="373" id="Pee-Mn-r1f"/>
+                            <binding destination="373" name="title" keyPath="stopButtonTitle" id="UAy-xs-35b"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="400">
-                        <rect key="frame" x="343" y="267" width="123" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Get Version" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="402">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="getVersionAction:" target="373" id="408"/>
-                        </connections>
-                    </button>
-                    <scrollView misplaced="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="426">
-                        <rect key="frame" x="20" y="20" width="321" height="275"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <clipView key="contentView" misplaced="YES" id="IjT-iZ-mr5">
-                            <rect key="frame" x="1" y="1" width="319" height="273"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <textView editable="NO" importsGraphics="NO" richText="NO" findStyle="panel" verticallyResizable="YES" id="427">
-                                    <rect key="frame" x="0.0" y="0.0" width="319" height="273"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="319" height="273"/>
-                                    <size key="maxSize" width="463" height="10000000"/>
-                                    <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="319" height="273"/>
-                                    <size key="maxSize" width="463" height="10000000"/>
-                                </textView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </clipView>
-                        <constraints>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="438"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="439"/>
-                        </constraints>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="428">
-                            <rect key="frame" x="-100" y="-100" width="87" height="18"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                        <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="429">
-                            <rect key="frame" x="304" y="1" width="16" height="273"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                        </scroller>
-                    </scrollView>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="400" firstAttribute="top" secondItem="368" secondAttribute="top" constant="20" symbolic="YES" id="410"/>
-                    <constraint firstAttribute="bottom" secondItem="375" secondAttribute="bottom" constant="20" symbolic="YES" id="425"/>
-                    <constraint firstItem="426" firstAttribute="leading" secondItem="368" secondAttribute="leading" constant="20" symbolic="YES" id="431"/>
-                    <constraint firstItem="426" firstAttribute="top" secondItem="368" secondAttribute="top" constant="20" symbolic="YES" id="433"/>
-                    <constraint firstAttribute="bottom" secondItem="426" secondAttribute="bottom" constant="20" symbolic="YES" id="434"/>
-                    <constraint firstItem="400" firstAttribute="leading" secondItem="426" secondAttribute="trailing" constant="8" symbolic="YES" id="465"/>
-                    <constraint firstAttribute="trailing" secondItem="400" secondAttribute="trailing" constant="20" symbolic="YES" id="466"/>
-                    <constraint firstItem="375" firstAttribute="leading" secondItem="426" secondAttribute="trailing" constant="8" id="Fnd-1z-U8v"/>
-                    <constraint firstAttribute="trailing" secondItem="375" secondAttribute="trailing" constant="20" id="OCg-eo-ZNe"/>
-                </constraints>
             </view>
         </window>
         <customObject id="373" userLabel="AppDelegate" customClass="AppDelegate">
             <connections>
-                <outlet property="textView" destination="427" id="469"/>
                 <outlet property="window" destination="367" id="386"/>
             </connections>
         </customObject>

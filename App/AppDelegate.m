@@ -8,6 +8,7 @@
 @interface AppDelegate ()
 @property (atomic, copy, readwrite) NSData * authorization;
 @property (atomic, strong, readwrite) NSXPCConnection * helperToolConnection;
+@property (atomic) BOOL hijacking;
 @end
 
 @implementation AppDelegate {
@@ -149,10 +150,7 @@
         }
         else
         {
-            NSLog(@"version = %@", version);
             if (![version isEqualToString:localVersion]) {
-                NSLog(@"installing");
-                
                 NSError* installError = [self _installSnifferTool];
                 if (installError) {
                     ErrLog(@"error installing tool: %@", error);
@@ -161,39 +159,113 @@
                     [self _ensureThatNewestToolIsInstalled];
                 }
             }
-            
+            else {
+                DebugLog(@"Sniffer %@ available", version);
+            }
         }
     }];
 }
 
 
-- (IBAction)installAction:(id)sender
+#pragma mark -
+
+
+- (IBAction) toggleHijacking:(id)sender
 {
     #pragma unused(sender)
     
-    NSError* error = [self _installSnifferTool];
-    if (error) {
-        ErrLog(@"error installing tool: %@", error);
+    if (!self.hijacking)
+    {
+        [self connectAndExecuteCommandBlock:^(NSError * connectError) {
+            
+            if (connectError) {
+                ErrLog(@"error connecting: %@", connectError);
+                return;
+            }
+
+            id remoteProxy = [self.helperToolConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
+                if (proxyError) {
+                    ErrLog(@"error getting proxy: %@", proxyError);
+                }
+            }];
+            
+            [remoteProxy startSniffingAuthorization:self.authorization withReply:^(NSError* error) {
+                if (error) {
+                    ErrLog(@"error start sniffing: %@", error);
+                    return;
+                }
+                
+                self.hijacking = YES;
+            }];
+
+        }];
+    }
+    else
+    {
+        [self connectAndExecuteCommandBlock:^(NSError * connectError) {
+            
+            if (connectError) {
+                ErrLog(@"error connecting: %@", connectError);
+                return;
+            }
+            
+            id remoteProxy = [self.helperToolConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
+                if (proxyError) {
+                    ErrLog(@"error getting proxy: %@", proxyError);
+                }
+            }];
+            
+            [remoteProxy stopSniffingAuthorization:self.authorization withReply:^(NSError* error) {
+                if (error) {
+                    ErrLog(@"error stop sniffing: %@", error);
+                    return;
+                }
+                
+                self.hijacking = NO;
+            }];
+            
+        }];
     }
 }
 
-- (IBAction)getVersionAction:(id)sender
-{
-    #pragma unused(sender)
-    
-    [self _getVersionWithReply:^(NSError *error, NSString *version) {
-        
-        if (error) {
-            ErrLog(@"error getting version: %@", error);
-        }
-        else {
-            NSLog(@"version = %@", version);
-        }
-    }];
+
++ (NSSet*) keyPathsForValuesAffectingStopButtonTitle {
+    return [NSSet setWithObject:@"hijacking"];
+}
+
+- (NSString*) stopButtonTitle {
+    return (self.hijacking) ? @"Stop" : @"Start";
 }
 
 
 
+//- (IBAction)installAction:(id)sender
+//{
+//    #pragma unused(sender)
+//    
+//    NSError* error = [self _installSnifferTool];
+//    if (error) {
+//        ErrLog(@"error installing tool: %@", error);
+//    }
+//}
+//
+//- (IBAction)getVersionAction:(id)sender
+//{
+//    #pragma unused(sender)
+//    
+//    [self _getVersionWithReply:^(NSError *error, NSString *version) {
+//        
+//        if (error) {
+//            ErrLog(@"error getting version: %@", error);
+//        }
+//        else {
+//            NSLog(@"version = %@", version);
+//        }
+//    }];
+//}
+//
+//
+//
 
 /*
 - (IBAction)readLicenseAction:(id)sender

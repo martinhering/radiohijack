@@ -15,7 +15,7 @@ static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
     dispatch_once(&sOnceToken, ^{
         sCommandInfo = @{
                          
-                         NSStringFromSelector(@selector(stopSniffingAuthorization:withReply:)) : @{
+                         NSStringFromSelector(@selector(startSniffingAuthorization:withReply:)) : @{
                                  kCommandKeyAuthRightName    : @"com.vemedio.RadioHijack.Sniffer.start",
                                  kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow,
                                  kCommandKeyAuthRightDesc    : @"RadioHijack is trying to start sniffing network interfaces."
