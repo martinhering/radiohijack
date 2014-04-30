@@ -18,4 +18,6 @@
 - (void)connectWithEndpointReply:(void(^)(NSXPCListenerEndpoint * endpoint))reply;
 - (void)getVersionWithReply:(void(^)(NSString * version))reply;
 
+- (void)startSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply;
+- (void)stopSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply;
 @end

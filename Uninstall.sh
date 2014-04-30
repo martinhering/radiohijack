@@ -11,6 +11,5 @@ sudo launchctl unload /Library/LaunchDaemons/com.vemedio.RadioHijack.Sniffer.pli
 sudo rm /Library/LaunchDaemons/com.vemedio.RadioHijack.Sniffer.plist
 sudo rm /Library/PrivilegedHelperTools/com.vemedio.RadioHijack.Sniffer
 
-sudo security -q authorizationdb remove "com.example.apple-samplecode.EBAS.readLicenseKey"
-sudo security -q authorizationdb remove "com.example.apple-samplecode.EBAS.writeLicenseKey"
-sudo security -q authorizationdb remove "com.example.apple-samplecode.EBAS.startWebService"
+sudo security -q authorizationdb remove "com.vemedio.RadioHijack.Sniffer.start"
+sudo security -q authorizationdb remove "com.vemedio.RadioHijack.Sniffer.stop"

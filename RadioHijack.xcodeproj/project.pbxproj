@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		1B01ECEB1910D7E1002CD7AB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B01ECEA1910D7E1002CD7AB /* InfoPlist.strings */; };
 		1B01ECED1910D7E4002CD7AB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1B01ECEC1910D7E4002CD7AB /* MainMenu.xib */; };
+		1B01ECF419110009002CD7AB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4ED7B8315E79B83002AD912 /* Cocoa.framework */; };
+		1B01ECF519110743002CD7AB /* Sniffer-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4C372E315E7CC10007554D3 /* Sniffer-Info.plist */; };
 		E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4CD036715E7A2C300FDC22C /* com.vemedio.RadioHijack.Sniffer */; };
 		E4C372F815E7D4D4007554D3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */; };
 		E4C372FA15E7D4D8007554D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F915E7D4D8007554D3 /* Security.framework */; };
-		E4C372FC15E7D4FE007554D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372FB15E7D4FE007554D3 /* Foundation.framework */; };
 		E4CBCCE315EBA7000081DF5C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F915E7D4D8007554D3 /* Security.framework */; };
 		E4CBCCE715EBA7550081DF5C /* HelperTool.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CBCCE615EBA7550081DF5C /* HelperTool.m */; };
 		E4CBCCEC15EBBB8D0081DF5C /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CBCCEB15EBBB8D0081DF5C /* Common.m */; };
@@ -52,11 +53,10 @@
 		1B01ECEF1910D8E6002CD7AB /* RadioHijack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RadioHijack-Prefix.pch"; sourceTree = "<group>"; };
 		1B01ECF11910D9F7002CD7AB /* Sniffer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sniffer-Prefix.pch"; sourceTree = "<group>"; };
 		E456726C15E7E4B80050ECAB /* Uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Uninstall.sh; sourceTree = "<group>"; };
-		E4C372E315E7CC10007554D3 /* HelperTool-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HelperTool-Info.plist"; sourceTree = "<group>"; };
-		E4C372E415E7CC10007554D3 /* HelperTool-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HelperTool-Launchd.plist"; sourceTree = "<group>"; };
+		E4C372E315E7CC10007554D3 /* Sniffer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Info.plist"; sourceTree = "<group>"; };
+		E4C372E415E7CC10007554D3 /* Sniffer-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Launchd.plist"; sourceTree = "<group>"; };
 		E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		E4C372F915E7D4D8007554D3 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		E4C372FB15E7D4FE007554D3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E4CBCCE515EBA7550081DF5C /* HelperTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperTool.h; sourceTree = "<group>"; };
 		E4CBCCE615EBA7550081DF5C /* HelperTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperTool.m; sourceTree = "<group>"; };
 		E4CBCCE915EBB50D0081DF5C /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
@@ -76,8 +76,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4C372FC15E7D4FE007554D3 /* Foundation.framework in Frameworks */,
 				E4CBCCE315EBA7000081DF5C /* Security.framework in Frameworks */,
+				1B01ECF419110009002CD7AB /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,8 +108,8 @@
 		1B01ECF01910D9BD002CD7AB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E4C372E315E7CC10007554D3 /* HelperTool-Info.plist */,
-				E4C372E415E7CC10007554D3 /* HelperTool-Launchd.plist */,
+				E4C372E315E7CC10007554D3 /* Sniffer-Info.plist */,
+				E4C372E415E7CC10007554D3 /* Sniffer-Launchd.plist */,
 				1B01ECF11910D9F7002CD7AB /* Sniffer-Prefix.pch */,
 			);
 			name = Resources;
@@ -161,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				E4ED7B8315E79B83002AD912 /* Cocoa.framework */,
-				E4C372FB15E7D4FE007554D3 /* Foundation.framework */,
 				E4C372F915E7D4D8007554D3 /* Security.framework */,
 				E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */,
 			);
@@ -182,9 +181,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4CD036615E7A2C300FDC22C /* HelperTool */ = {
+		E4CD036615E7A2C300FDC22C /* Sniffer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4CD036E15E7A2C300FDC22C /* Build configuration list for PBXNativeTarget "HelperTool" */;
+			buildConfigurationList = E4CD036E15E7A2C300FDC22C /* Build configuration list for PBXNativeTarget "Sniffer" */;
 			buildPhases = (
 				E4CD036415E7A2C300FDC22C /* Sources */,
 				E4CD036515E7A2C300FDC22C /* Frameworks */,
@@ -193,7 +192,7 @@
 			);
 			dependencies = (
 			);
-			name = HelperTool;
+			name = Sniffer;
 			productName = HelperTool;
 			productReference = E4CD036715E7A2C300FDC22C /* com.vemedio.RadioHijack.Sniffer */;
 			productType = "com.apple.product-type.tool";
@@ -240,7 +239,7 @@
 			projectRoot = "";
 			targets = (
 				E4ED7B7E15E79B83002AD912 /* App */,
-				E4CD036615E7A2C300FDC22C /* HelperTool */,
+				E4CD036615E7A2C300FDC22C /* Sniffer */,
 			);
 		};
 /* End PBXProject section */
@@ -252,6 +251,7 @@
 			files = (
 				1B01ECEB1910D7E1002CD7AB /* InfoPlist.strings in Resources */,
 				1B01ECED1910D7E4002CD7AB /* MainMenu.xib in Resources */,
+				1B01ECF519110743002CD7AB /* Sniffer-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,7 +283,7 @@
 /* Begin PBXTargetDependency section */
 		E4AD7AA61608DC2D00F594A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E4CD036615E7A2C300FDC22C /* HelperTool */;
+			target = E4CD036615E7A2C300FDC22C /* Sniffer */;
 			targetProxy = E4AD7AA51608DC2D00F594A2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -294,16 +294,16 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Developer ID Application: vemedio";
 				GCC_PREFIX_HEADER = "HelperTool/Sniffer-Prefix.pch";
-				INFOPLIST_FILE = "HelperTool/HelperTool-Info.plist";
+				INFOPLIST_FILE = "HelperTool/Sniffer-Info.plist";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
 					__info_plist,
-					"HelperTool/HelperTool-Info.plist",
+					"HelperTool/Sniffer-Info.plist",
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"HelperTool/HelperTool-Launchd.plist",
+					"HelperTool/Sniffer-Launchd.plist",
 				);
 				PRODUCT_NAME = com.vemedio.RadioHijack.Sniffer;
 				SKIP_INSTALL = YES;
@@ -315,16 +315,16 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Developer ID Application: vemedio";
 				GCC_PREFIX_HEADER = "HelperTool/Sniffer-Prefix.pch";
-				INFOPLIST_FILE = "HelperTool/HelperTool-Info.plist";
+				INFOPLIST_FILE = "HelperTool/Sniffer-Info.plist";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
 					__TEXT,
 					__info_plist,
-					"HelperTool/HelperTool-Info.plist",
+					"HelperTool/Sniffer-Info.plist",
 					"-sectcreate",
 					__TEXT,
 					__launchd_plist,
-					"HelperTool/HelperTool-Launchd.plist",
+					"HelperTool/Sniffer-Launchd.plist",
 				);
 				PRODUCT_NAME = com.vemedio.RadioHijack.Sniffer;
 				SKIP_INSTALL = YES;
@@ -444,7 +444,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E4CD036E15E7A2C300FDC22C /* Build configuration list for PBXNativeTarget "HelperTool" */ = {
+		E4CD036E15E7A2C300FDC22C /* Build configuration list for PBXNativeTarget "Sniffer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4CD036F15E7A2C300FDC22C /* Debug */,

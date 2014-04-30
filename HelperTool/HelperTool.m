@@ -10,6 +10,7 @@
 
 @interface HelperTool () <NSXPCListenerDelegate, SnifferProtocol>
 @property (atomic, strong, readwrite) NSXPCListener* listener;
+@property (atomic, strong) NSTimer* hostApplicationCheckTimer;
 @end
 
 @implementation HelperTool
@@ -19,27 +20,25 @@
     self = [super init];
     if (self != nil)
     {
+        [self _hostApplicationCheck];
+        _hostApplicationCheckTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(_hostApplicationCheck) userInfo:nil repeats:YES];
+        
         _listener = [[NSXPCListener alloc] initWithMachServiceName:kHelperToolMachServiceName];
         _listener.delegate = self;
         
         [_listener resume];
-        
-        [self updateInactivityTimer];
     }
     return self;
 }
 
-#pragma mark -
-
-- (void) _exitAfterInactivity
+- (void) _hostApplicationCheck
 {
-    exit(0);
-}
-
-- (void) updateInactivityTimer
-{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_exitAfterInactivity) object:nil];
-    [self performSelector:@selector(_exitAfterInactivity) withObject:nil afterDelay:60];
+    NSArray* applications = [NSRunningApplication runningApplicationsWithBundleIdentifier:@"com.vemedio.RadioHijack"];
+    
+    if ([applications count] == 0) {
+        NSLog(@"host application is not running, quitting");
+        exit(0);
+    }
 }
 
 #pragma mark -
@@ -114,17 +113,23 @@
 
 - (void)connectWithEndpointReply:(void (^)(NSXPCListenerEndpoint *))reply
 {
-    [self updateInactivityTimer];
-    
     reply([self.listener endpoint]);
 }
 
 - (void)getVersionWithReply:(void(^)(NSString * version))reply
 {
-    [self updateInactivityTimer];
-    
     reply([[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
 }
 
+- (void)startSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply
+{
+    NSError* error = [self checkAuthorization:authData command:_cmd];
+    reply(error);
+}
 
+- (void)stopSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply
+{
+    NSError* error = [self checkAuthorization:authData command:_cmd];
+    reply(error);
+}
 @end

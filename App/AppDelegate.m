@@ -37,6 +37,9 @@
     }
     
     [self.window makeKeyAndOrderFront:self];
+    
+    
+    [self _ensureThatNewestToolIsInstalled];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
@@ -79,18 +82,98 @@
 
 #pragma mark - IB Actions
 
-- (IBAction)installAction:(id)sender
+- (NSError*) _installSnifferTool
 {
-    #pragma unused(sender)
-
     Boolean             success;
     CFErrorRef          error;
     
     success = SMJobBless(kSMDomainSystemLaunchd, (__bridge CFStringRef)kHelperToolMachServiceName, self->_authRef, &error );
 
     if (!success) {
-        ErrLog(@"error installing sniffer: %@", (__bridge NSError *) error);
-        CFRelease(error);
+        return (__bridge_transfer NSError*)error;
+    }
+    
+    return nil;
+}
+
+- (void) _getVersionWithReply:(void(^)(NSError* error, NSString* version))reply
+{
+    [self connectAndExecuteCommandBlock:^(NSError * connectError) {
+        
+        if (connectError) {
+            reply(connectError, nil);
+            return;
+        }
+        
+        id remoteProxy = [self.helperToolConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
+            
+            if (proxyError) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    reply(proxyError, nil);
+                });
+            }
+        }];
+
+        [remoteProxy getVersionWithReply:^(NSString *version) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                reply(nil, version);
+            });
+        }];
+
+    }];
+}
+
+- (void) _ensureThatNewestToolIsInstalled
+{
+    NSString* sniffInfoPath = [[NSBundle mainBundle] pathForResource:@"Sniffer-Info" ofType:@"plist"];
+    NSDictionary* sniffInfoDict = [NSDictionary dictionaryWithContentsOfFile:sniffInfoPath];
+    NSString* localVersion = sniffInfoDict[@"CFBundleVersion"];
+    
+    
+    [self _getVersionWithReply:^(NSError *error, NSString *version) {
+        
+        if (error) {
+            
+            if ([error code] == 4099) {
+                NSError* installError = [self _installSnifferTool];
+                if (installError) {
+                    ErrLog(@"error installing tool: %@", error);
+                }
+                else {
+                    [self _ensureThatNewestToolIsInstalled];
+                }
+            }
+            else {
+                ErrLog(@"error getting version: %@", error);
+            }
+        }
+        else
+        {
+            NSLog(@"version = %@", version);
+            if (![version isEqualToString:localVersion]) {
+                NSLog(@"installing");
+                
+                NSError* installError = [self _installSnifferTool];
+                if (installError) {
+                    ErrLog(@"error installing tool: %@", error);
+                }
+                else {
+                    [self _ensureThatNewestToolIsInstalled];
+                }
+            }
+            
+        }
+    }];
+}
+
+
+- (IBAction)installAction:(id)sender
+{
+    #pragma unused(sender)
+    
+    NSError* error = [self _installSnifferTool];
+    if (error) {
+        ErrLog(@"error installing tool: %@", error);
     }
 }
 
@@ -98,25 +181,19 @@
 {
     #pragma unused(sender)
     
-    [self connectAndExecuteCommandBlock:^(NSError * connectError) {
+    [self _getVersionWithReply:^(NSError *error, NSString *version) {
         
-        if (connectError) {
-            ErrLog(@"error connecting to sniffer: %@", connectError);
-            return;
+        if (error) {
+            ErrLog(@"error getting version: %@", error);
         }
-        
-        id remoteProxy = [self.helperToolConnection remoteObjectProxyWithErrorHandler:^(NSError * proxyError) {
-            if (proxyError) {
-                ErrLog(@"remote proxy error: %@", proxyError);
-            }
-        }];
-
-        [remoteProxy getVersionWithReply:^(NSString *version) {
+        else {
             NSLog(@"version = %@", version);
-        }];
-
+        }
     }];
 }
+
+
+
 
 /*
 - (IBAction)readLicenseAction:(id)sender

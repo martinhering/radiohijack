@@ -1,32 +1,7 @@
 #import "Common.h"
-
 #import "HelperTool.h"
 
 @implementation Common
-
-// +commandInfo returns a dictionary that represents everything we need to know about the 
-// authorized commands supported by the app.  Each dictionary key is the string form of 
-// the command selector.  The corresponding object is a dictionary that contains three items:
-//
-// o kCommandKeyAuthRightName is the name of the authorization right itself.  This is used by 
-//   both the app (when creating rights and when pre-authorizing rights) and by the tool 
-//   (when doing the final authorization check).
-//
-// o kCommandKeyAuthRightDefault is the default right specification, used by the app to when 
-//   it needs to create the default right specification.  This is commonly a string contacting 
-//   a rule a name, but it can potentially be more complex.  See the discussion of the 
-//   rightDefinition parameter of AuthorizationRightSet.
-//
-// o kCommandKeyAuthRightDesc is a user-visible description of the right.  This is used by the 
-//   app when it needs to create the default right specification.  Actually, string is used 
-//   to look up a localized version of the string in "Common.strings".
-//
-//   The kCommandKeyAuthRightDesc strings here contain EBAS as as shortcut for 
-//   EvenBetterAuthorizationSample.  However, the values in "Common.strings" contain the fully 
-//   expanded name, which allows you to see whether localization is working properly.
-//
-//   These strings are also surrounded by NSLocalizedString, which makes it easy to use 
-//   <x-man-page://1/genstrings> to create an initial "Common.strings".
 
 static NSString * kCommandKeyAuthRightName    = @"authRightName";
 static NSString * kCommandKeyAuthRightDefault = @"authRightDefault";
@@ -40,38 +15,28 @@ static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
     dispatch_once(&sOnceToken, ^{
         sCommandInfo = @{
                          
+                         NSStringFromSelector(@selector(stopSniffingAuthorization:withReply:)) : @{
+                                 kCommandKeyAuthRightName    : @"com.vemedio.RadioHijack.Sniffer.start",
+                                 kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow,
+                                 kCommandKeyAuthRightDesc    : @"RadioHijack is trying to start sniffing network interfaces."
+                                 },
                          
-            /*
-            NSStringFromSelector(@selector(readLicenseKeyAuthorization:withReply:)) : @{
-                kCommandKeyAuthRightName    : @"com.example.apple-samplecode.EBAS.readLicenseKey", 
-                kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow, 
-                kCommandKeyAuthRightDesc    : @"EBAS is trying to read its license key."
-            },
-            NSStringFromSelector(@selector(writeLicenseKey:authorization:withReply:)) : @{
-                kCommandKeyAuthRightName    : @"com.example.apple-samplecode.EBAS.writeLicenseKey", 
-                kCommandKeyAuthRightDefault : @kAuthorizationRuleAuthenticateAsAdmin, 
-                kCommandKeyAuthRightDesc    : @"EBAS is trying to write its license key."
-            },
-            NSStringFromSelector(@selector(bindToLowNumberPortAuthorization:withReply:)) : @{
-                kCommandKeyAuthRightName    : @"com.example.apple-samplecode.EBAS.startWebService", 
-                kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow, 
-                kCommandKeyAuthRightDesc    : @"EBAS is trying to start its web service."
-            }
-             
-             */
+                         NSStringFromSelector(@selector(stopSniffingAuthorization:withReply:)) : @{
+                                 kCommandKeyAuthRightName    : @"com.vemedio.RadioHijack.Sniffer.stop",
+                                 kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow,
+                                 kCommandKeyAuthRightDesc    : @"RadioHijack is trying to stop sniffing network interfaces."
+                                 },
         };
     });
     return sCommandInfo;
 }
 
 + (NSString *)authorizationRightForCommand:(SEL)command
-    // See comment in header.
 {
     return [self commandInfo][NSStringFromSelector(command)][kCommandKeyAuthRightName];
 }
 
 + (void)enumerateRightsUsingBlock:(void (^)(NSString * authRightName, id authRightDefault, NSString * authRightDesc))block
-    // Calls the supplied block with information about each known authorization right..
 {
     [self.commandInfo enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         #pragma unused(key)
@@ -101,7 +66,6 @@ static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
 }
 
 + (void)setupAuthorizationRights:(AuthorizationRef)authRef
-    // See comment in header.
 {
     assert(authRef != NULL);
     [Common enumerateRightsUsingBlock:^(NSString * authRightName, id authRightDefault, NSString * authRightDesc) {
@@ -113,19 +77,14 @@ static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
         blockErr = AuthorizationRightGet([authRightName UTF8String], NULL);
         if (blockErr == errAuthorizationDenied) {
             blockErr = AuthorizationRightSet(
-                authRef,                                    // authRef
-                [authRightName UTF8String],                 // rightName
-                (__bridge CFTypeRef) authRightDefault,      // rightDefinition
-                (__bridge CFStringRef) authRightDesc,       // descriptionKey
-                NULL,                                       // bundle (NULL implies main bundle)
-                CFSTR("Common")                             // localeTableName
+                authRef,
+                [authRightName UTF8String],
+                (__bridge CFTypeRef) authRightDefault,
+                (__bridge CFStringRef) authRightDesc,
+                NULL,
+                NULL
             );
             assert(blockErr == errAuthorizationSuccess);
-        } else { 
-            // A right already exists (err == noErr) or any other error occurs, we 
-            // assume that it has been set up in advance by the system administrator or
-            // this is the second time we've run.  Either way, there's nothing more for 
-            // us to do.
         }
     }];
 }
