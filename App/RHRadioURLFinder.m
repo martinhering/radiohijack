@@ -44,6 +44,11 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     return [NSSet setWithObjects:@"png", @"jpg", @"php", @"js", @"html", @"htm", @"css", @"jpeg", @"gif", @"ico", @"json", @"xml", @"asp", @"aspx", nil];
 }
 
+- (NSSet*) _mimeCodesToIgnore
+{
+    return [NSSet setWithObjects:@"text/html", @"image/png", @"image/jpg", @"application/json", @"application/x-shockwave-flash", nil];
+}
+
 - (Stream*) _streamForIcecastResponse:(NSHTTPURLResponse*)response
 {
     NSDictionary* headers = [response allHeaderFields];
@@ -112,7 +117,12 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     
     NSDictionary* responseHeaders = [response allHeaderFields];
     NSString* responseContentType = responseHeaders[@"Content-Type"];
-
+    
+    if ([[self _mimeCodesToIgnore] containsObject:responseContentType]) {
+        //NSLog(@"filted url: %@ (%@)", request.URL, pathExtension);
+        return;
+    }
+    
     // get content type
     NSDictionary* mimeCodeType = @{@"application/xspf+xml" :            @(RHContentTypeXSPFPlaylist),
                                    @"application/vnd.apple.mpegurl" :   @(RHContentTypeHTTPStreamingPlaylist),
@@ -152,7 +162,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     
     else
     {
-        NSLog(@"%@", responseHeaders);
+        NSLog(@"unknown request: %@, response: %@", request, response);
     }
 }
 

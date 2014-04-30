@@ -325,7 +325,7 @@
 {
     #pragma unused(item)
     
-    Stream* stream = [[self.arrayController arrangedObjects] firstObject];
+    Stream* stream = [[self.arrayController selectedObjects] firstObject];
     NSString* url = [stream.URL absoluteString];
     NSString* scriptSource = [NSString stringWithFormat:@"tell Application \"QuickTime Player\"\nopen URL \"%@\"\nend tell\n", url];
     NSAppleScript* script = [[NSAppleScript alloc] initWithSource:scriptSource];
@@ -341,7 +341,7 @@
 {
     #pragma unused(item)
     
-    Stream* stream = [[self.arrayController arrangedObjects] firstObject];
+    Stream* stream = [[self.arrayController selectedObjects] firstObject];
     NSString* url = [stream.URL absoluteString];
     NSString* scriptSource = [NSString stringWithFormat:@"tell Application \"Snowtape\"\nstart playing url \"%@\"\nend tell\n", url];
     NSAppleScript* script = [[NSAppleScript alloc] initWithSource:scriptSource];
