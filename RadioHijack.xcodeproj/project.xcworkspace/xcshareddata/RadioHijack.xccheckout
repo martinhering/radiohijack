@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>997B2EA5-5394-4D19-9BA9-E3BA13A14E4C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RadioHijack</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>31B6BD93-B728-4935-AF72-9A0EAD1734EA</key>
+		<string>ssh://vault.vemedio.net/git/RadioHijack</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RadioHijack.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>31B6BD93-B728-4935-AF72-9A0EAD1734EA</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://vault.vemedio.net/git/RadioHijack</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>31B6BD93-B728-4935-AF72-9A0EAD1734EA</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>31B6BD93-B728-4935-AF72-9A0EAD1734EA</string>
+			<key>IDESourceControlWCCName</key>
+			<string>RadioHijack-git</string>
+		</dict>
+	</array>
+</dict>
+</plist>

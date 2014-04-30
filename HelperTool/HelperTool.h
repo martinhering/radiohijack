@@ -1,0 +1,5 @@
+
+
+@interface HelperTool : NSObject
+
+@end

@@ -1,0 +1,23 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#ifdef __OBJC__
+#import <Cocoa/Cocoa.h>
+#endif
+
+#define DEFINE_WEAK_SELF __weak typeof(self) weakSelf = self;
+
+#ifdef DEBUG
+#define DebugLog(format, args...) if (format != nil) NSLog(@"[%@:%d] %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:format, ##args])
+#define DebugErrLog(format, args...) if (format != nil) NSLog(@"[%@:%d] ***%@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:format, ##args])
+#else
+#define DebugLog(format, args...)
+#define DebugErrLog(format, args...)
+#endif
+
+
+#define ErrLog(format, args...) if (format != nil) NSLog(@"***%@",[NSString stringWithFormat:format, ##args]);
+

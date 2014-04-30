@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.vemedio.RadioHijack.Sniffer</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>HelperTool</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.3</string>
+	<key>SMAuthorizedClients</key>
+	<array>
+		<string>identifier &quot;com.vemedio.RadioHijack&quot; and anchor apple generic and certificate leaf[subject.CN] = &quot;Developer ID Application: vemedio&quot;</string>
+	</array>
+</dict>
+</plist>
