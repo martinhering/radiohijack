@@ -268,7 +268,6 @@ static RHSniffOperation* me;
                 if (headerFinished)
                 {
                     NSHTTPURLResponse* response = [self _parseHTTPResponseWithData:data requestURL:request.URL];
-                    //NSLog(@"request: %@, response: %@", request, response);
                     
                     if (self.didReceiveHTTPRequestResponse) {
                         dispatch_async(dispatch_get_main_queue(), ^{

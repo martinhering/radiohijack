@@ -9,6 +9,7 @@
 @property (atomic, strong, readwrite) NSXPCListener* listener;
 @property (atomic, strong) NSTimer* hostApplicationCheckTimer;
 @property (nonatomic, strong) NSOperationQueue* sniffOperationQueue;
+@property (nonatomic, strong) NSMutableArray* dataQueue;
 @end
 
 @implementation HelperTool
@@ -19,6 +20,7 @@
     if (self != nil)
     {
         _sniffOperationQueue = [[NSOperationQueue alloc] init];
+        _dataQueue = [[NSMutableArray alloc] init];
         
         [self _hostApplicationCheck];
         _hostApplicationCheckTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(_hostApplicationCheck) userInfo:nil repeats:YES];
@@ -133,7 +135,14 @@
             RHSniffOperation* sniffOp = [[RHSniffOperation alloc] initWithNetworkInterface:interface];
             sniffOp.didReceiveHTTPRequestResponse = ^(NSURLRequest* request, NSHTTPURLResponse* response) {
                 
-                NSLog(@"request:%@ response:%@", request, response);
+                [self.dataQueue addObject:@{ @"request" : [NSKeyedArchiver archivedDataWithRootObject:request], @"response" : [NSKeyedArchiver archivedDataWithRootObject:response] }];
+                
+                //NSLog(@"request:%@ response:%@", request, response);
+                
+                [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kRHSnifferDidReceiveHTTPTrafficNotification
+                                                                               object:@"sniffer"
+                                                                             userInfo:nil
+                                                                              options:(NSNotificationPostToAllSessions|NSNotificationDeliverImmediately)];
             };
             
             [self.sniffOperationQueue addOperation:sniffOp];
@@ -156,5 +165,18 @@
         NSLog(@"sniffing stopped");
     }
     reply(error);
+}
+
+- (void) getQueuedHTTPDataAuthorization:(NSData *)authData withReply:(void(^)(NSError* error, NSArray* queuedHTTPData))reply
+{
+    NSError* error = [self checkAuthorization:authData command:_cmd];
+    if (error)
+    {
+        reply(error, nil);
+        return;
+    }
+    
+    reply(nil, self.dataQueue);
+    [self.dataQueue removeAllObjects];
 }
 @end

@@ -13,3 +13,5 @@ sudo rm /Library/PrivilegedHelperTools/com.vemedio.RadioHijack.Sniffer
 
 sudo security -q authorizationdb remove "com.vemedio.RadioHijack.Sniffer.start"
 sudo security -q authorizationdb remove "com.vemedio.RadioHijack.Sniffer.stop"
+sudo security -q authorizationdb remove "com.vemedio.RadioHijack.Sniffer.getData"
+

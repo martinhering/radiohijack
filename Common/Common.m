@@ -26,10 +26,17 @@ static NSString * kCommandKeyAuthRightDesc    = @"authRightDescription";
                                  kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow,
                                  kCommandKeyAuthRightDesc    : @"RadioHijack is trying to stop sniffing network interfaces."
                                  },
+                         
+                         NSStringFromSelector(@selector(getQueuedHTTPDataAuthorization:withReply:)) : @{
+                                 kCommandKeyAuthRightName    : @"com.vemedio.RadioHijack.Sniffer.getData",
+                                 kCommandKeyAuthRightDefault : @kAuthorizationRuleClassAllow,
+                                 kCommandKeyAuthRightDesc    : @"RadioHijack is trying to get queued data."
+                                 },
         };
     });
     return sCommandInfo;
 }
+
 
 + (NSString *)authorizationRightForCommand:(SEL)command
 {

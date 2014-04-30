@@ -12,12 +12,14 @@
 
 
 #define kHelperToolMachServiceName @"com.vemedio.RadioHijack.Sniffer"
+#define kRHSnifferDidReceiveHTTPTrafficNotification @"RHSnifferDidReceiveHTTPTrafficNotification"
 
 @protocol SnifferProtocol
 @required
-- (void)connectWithEndpointReply:(void(^)(NSXPCListenerEndpoint * endpoint))reply;
-- (void)getVersionWithReply:(void(^)(NSString * version))reply;
+- (void) connectWithEndpointReply:(void(^)(NSXPCListenerEndpoint * endpoint))reply;
+- (void) getVersionWithReply:(void(^)(NSString * version))reply;
 
-- (void)startSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply;
-- (void)stopSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply;
+- (void) startSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply;
+- (void) stopSniffingAuthorization:(NSData *)authData withReply:(void(^)(NSError* error))reply;
+- (void) getQueuedHTTPDataAuthorization:(NSData *)authData withReply:(void(^)(NSError* error, NSArray* queuedHTTPData))reply;
 @end
