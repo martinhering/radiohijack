@@ -157,7 +157,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     
     // get response type
     RHResponseType responseType = RHResponseTypeNone;
-    if ([[response.URL host] rangeOfString:@"live.streamtheworld.com"].location != NSNotFound) {
+    if ([[response.URL host] rangeOfString:@"live.streamtheworld.com"].location != NSNotFound && contentType == RHContentTypeFlashStream) {
         responseType = RHResponseTypeStreamTheWorld;
     }
     else if ([[response.URL host] rangeOfString:@"mdn.newmedia.nacamar.net"].location != NSNotFound) {
@@ -173,7 +173,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     
     if (contentType > RHContentTypeNone && responseType > RHResponseTypeNone)
     {
-        if (responseType == RHResponseTypeStreamTheWorld && contentType == RHContentTypeFlashStream)
+        if (responseType == RHResponseTypeStreamTheWorld)
         {
             NSURL* playlistURL = [self _playlistURLForStreamTheWorldResponse:response];
             stream = [Stream new];
