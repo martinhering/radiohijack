@@ -279,14 +279,14 @@
                             <rect key="frame" x="1" y="17" width="892" height="519"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="Wa3-kG-G5p" id="Zuj-XG-g0Z">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveName="MainTable" headerView="Wa3-kG-G5p" id="Zuj-XG-g0Z">
                                     <rect key="frame" x="0.0" y="0.0" width="892" height="519"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn width="193.875" minWidth="40" maxWidth="1000" id="frd-zv-JPU">
+                                        <tableColumn identifier="name" width="193.875" minWidth="40" maxWidth="1000" id="frd-zv-JPU">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Name">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -302,7 +302,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.name" id="3DS-t1-hrM"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="155" minWidth="40" maxWidth="1000" id="tfH-Kr-zZq">
+                                        <tableColumn identifier="url" width="155" minWidth="40" maxWidth="1000" id="tfH-Kr-zZq">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="URL">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -318,7 +318,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.URL" id="jjD-mh-5WC"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="96.171875" minWidth="10" maxWidth="3.4028234663852886e+38" id="osD-Nr-HRm">
+                                        <tableColumn identifier="slogan" width="96.171875" minWidth="10" maxWidth="3.4028234663852886e+38" id="osD-Nr-HRm">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Description">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -334,7 +334,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.slogan" id="Mwo-Ux-5aY"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="96.13671875" minWidth="10" maxWidth="3.4028234663852886e+38" id="fQ3-fu-3O8">
+                                        <tableColumn identifier="genre" width="96.13671875" minWidth="10" maxWidth="3.4028234663852886e+38" id="fQ3-fu-3O8">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Genre">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -350,7 +350,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.genre" id="Mdh-4q-dWW"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="zH4-Lw-lcv">
+                                        <tableColumn identifier="website" width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="zH4-Lw-lcv">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Website">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -366,7 +366,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.websiteURL" id="b2W-Vn-Ff4"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="rdj-ie-gBt">
+                                        <tableColumn identifier="bps" width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="rdj-ie-gBt">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Bits/Sec">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -382,7 +382,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.bitsPerSecond" id="tdg-De-W2S"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="r07-iG-gIH">
+                                        <tableColumn identifier="samplerate" width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="r07-iG-gIH">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Samplerate">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -398,7 +398,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.samplesPerSecond" id="iSW-zp-4SI"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="vOz-fO-JEB">
+                                        <tableColumn identifier="channels" width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="vOz-fO-JEB">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Channels">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -414,7 +414,7 @@
                                                 <binding destination="8T2-E7-KA0" name="value" keyPath="arrangedObjects.channels" id="jAX-om-oxJ"/>
                                             </connections>
                                         </tableColumn>
-                                        <tableColumn width="68" minWidth="10" maxWidth="3.4028234663852886e+38" id="uAx-Cw-5tx">
+                                        <tableColumn identifier="format" width="68" minWidth="10" maxWidth="3.4028234663852886e+38" id="uAx-Cw-5tx">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Format">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -447,7 +447,7 @@
                             <rect key="frame" x="1" y="520" width="198" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="bHJ-le-9gZ">
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="bHJ-le-9gZ">
                             <rect key="frame" x="-15" y="17" width="16" height="0.0"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>

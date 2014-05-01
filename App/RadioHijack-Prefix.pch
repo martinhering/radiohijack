@@ -6,6 +6,7 @@
 
 #ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
+#import "Foundation+Extentions.h"
 #endif
 
 #define DEFINE_WEAK_SELF __weak typeof(self) weakSelf = self;

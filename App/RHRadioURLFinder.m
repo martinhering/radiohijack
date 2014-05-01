@@ -9,38 +9,6 @@
 #import "RHRadioURLFinder.h"
 #import "Stream.h"
 
-@interface NSSet (RHRadioURLFinder)
-- (BOOL) containsPrefixOfString:(NSString*)string;
-@end
-
-@implementation NSSet (RHRadioURLFinder)
-
-- (BOOL) containsPrefixOfString:(NSString*)string
-{
-    for(NSString* element in self) {
-        if ([string hasPrefix:element]) {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
-
-- (BOOL) containsObjectWithPrefix:(NSString*)string
-{
-    for(NSString* element in self) {
-        if ([element hasPrefix:string]) {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
-
-@end
-
-#pragma mark -
-
 
 typedef NS_ENUM(NSInteger, RHContentType) {
 	RHContentTypeNone                   = 0,
@@ -55,6 +23,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     RHResponseTypeNone                  = 0,
     RHResponseTypeIcecast               = 1,
     RHResponseTypeStreamTheWorld        = 2,
+    RHResponseTypeNacamar               = 3,
 };
 
 @interface RHRadioURLFinder ()
@@ -81,7 +50,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
 
 - (NSSet*) _mimeCodesToIgnore
 {
-    return [NSSet setWithObjects:@"text/", @"image/", @"application/json", @"application/x-javascript", @"application/x-shockwave-flash", nil];
+    return [NSSet setWithObjects:@"text/", @"image/", @"application/json", @"application/x-javascript", @"application/javascript", @"application/x-shockwave-flash", nil];
 }
 
 - (Stream*) _streamForIcecastResponse:(NSHTTPURLResponse*)response
@@ -155,7 +124,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     NSURL* url = request.URL;
     NSString* pathExtension = [[url pathExtension] lowercaseString];
     if ([[self _pathExtensionsToIgnore] containsObject:pathExtension]) {
-        //NSLog(@"filted url: %@ (%@)", request.URL, pathExtension);
+        NSLog(@"filted url: %@ (%@)", request.URL, pathExtension);
         return;
     }
 
@@ -167,7 +136,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     NSString* responseContentType = responseHeaders[@"Content-Type"];
     
     if ([[self _mimeCodesToIgnore] containsPrefixOfString:responseContentType]) {
-        //NSLog(@"filted url: %@ (%@)", request.URL, pathExtension);
+        NSLog(@"filted url: %@ (%@, %@, %@)", request.URL, responseContentType, [request HTTPMethod], [request allHTTPHeaderFields]);
         return;
     }
     
@@ -190,25 +159,45 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     
     // get response type
     RHResponseType responseType = RHResponseTypeNone;
-    if ([headerKeys containsObjectWithPrefix:@"icy-"]) {
-        responseType = RHResponseTypeIcecast;
-    }
-    else if ([[response.URL absoluteString] rangeOfString:@"live.streamtheworld.com"].location != NSNotFound) {
+    if ([[response.URL host] rangeOfString:@"live.streamtheworld.com"].location != NSNotFound) {
         responseType = RHResponseTypeStreamTheWorld;
     }
+    else if ([[response.URL host] rangeOfString:@"mdn.newmedia.nacamar.net"].location != NSNotFound) {
+        responseType = RHResponseTypeNacamar;
+    }
+    else if ([headerKeys containsObjectWithPrefix:@"icy-"]) {
+        responseType = RHResponseTypeIcecast;
+    }
+    
+    
     
     Stream* stream;
     
     if (contentType > RHContentTypeNone && responseType > RHResponseTypeNone)
     {
-        if (responseType == RHResponseTypeIcecast) {
-            stream = [self _streamForIcecastResponse:response];
-        }
-        else if (responseType == RHResponseTypeStreamTheWorld && contentType == RHContentTypeFlashStream) {
+        if (responseType == RHResponseTypeStreamTheWorld && contentType == RHContentTypeFlashStream)
+        {
             NSURL* playlistURL = [self _playlistURLForStreamTheWorldResponse:response];
             stream = [Stream new];
             stream.name = @"PLS file";
             stream.URL = playlistURL;
+        }
+        
+        else if (responseType == RHResponseTypeNacamar)
+        {
+            stream = [self _streamForIcecastResponse:response];
+            // rewrite nacamar URL
+            if ([[response.URL absoluteString] rangeOfString:@"token="].location != NSNotFound) {
+                NSMutableString* urlString = [[response.URL absoluteString] mutableCopy];
+                [urlString replaceOccurrencesOfRegex:@"mdn.newmedia.nacamar.net/(.*?)/" withString:@"mdn.newmedia.nacamar.net/ps-$1/" options:NSRegularExpressionCaseInsensitive];
+                [urlString replaceOccurrencesOfRegex:@"\\?token=.*" withString:@"" options:NSRegularExpressionCaseInsensitive];
+                stream.URL = [NSURL URLWithString:urlString];
+            }
+        }
+        
+        else if (responseType == RHResponseTypeIcecast)
+        {
+            stream = [self _streamForIcecastResponse:response];
         }
     }
     
