@@ -19,7 +19,6 @@
 		1B01ED0A19111DB8002CD7AB /* RHRadioURLFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ED0919111DB8002CD7AB /* RHRadioURLFinder.m */; };
 		1B01ED0D19111F73002CD7AB /* Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ED0C19111F73002CD7AB /* Stream.m */; };
 		1B01ED16191163CB002CD7AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ED15191163CB002CD7AB /* main.m */; };
-		1B01ED18191163CB002CD7AB /* SnifferTest.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1B01ED17191163CB002CD7AB /* SnifferTest.1 */; };
 		1B01ED1D19116417002CD7AB /* RHSniffOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ECF719111263002CD7AB /* RHSniffOperation.mm */; };
 		1B01ED1E19116419002CD7AB /* SCNetworkAddition.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ECF819111263002CD7AB /* SCNetworkAddition.c */; };
 		1B01ED1F19116420002CD7AB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ED031911160D002CD7AB /* SystemConfiguration.framework */; };
@@ -27,7 +26,7 @@
 		1B01ED2119116424002CD7AB /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ED0019111395002CD7AB /* libpcap.dylib */; };
 		1B01ED2219116426002CD7AB /* libtins.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ECFE19111352002CD7AB /* libtins.a */; };
 		1B01ED2519122A1D002CD7AB /* Foundation+Extentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ED2419122A1D002CD7AB /* Foundation+Extentions.m */; };
-		E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4CD036715E7A2C300FDC22C /* com.vemedio.RadioHijack.Sniffer */; };
+		E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in Copy Root Tool */ = {isa = PBXBuildFile; fileRef = E4CD036715E7A2C300FDC22C /* com.vemedio.RadioHijack.Sniffer */; };
 		E4C372F815E7D4D4007554D3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */; };
 		E4C372FA15E7D4D8007554D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F915E7D4D8007554D3 /* Security.framework */; };
 		E4CBCCE315EBA7000081DF5C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F915E7D4D8007554D3 /* Security.framework */; };
@@ -51,24 +50,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1B01ED11191163CB002CD7AB /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-				1B01ED18191163CB002CD7AB /* SnifferTest.1 in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		E4C32DDB16023B43002AFAB3 /* CopyFiles */ = {
+		E4C32DDB16023B43002AFAB3 /* Copy Root Tool */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Contents/Library/LaunchServices;
 			dstSubfolderSpec = 1;
 			files = (
-				E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in CopyFiles */,
+				E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in Copy Root Tool */,
 			);
+			name = "Copy Root Tool";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -267,7 +257,6 @@
 			buildPhases = (
 				1B01ED0F191163CB002CD7AB /* Sources */,
 				1B01ED10191163CB002CD7AB /* Frameworks */,
-				1B01ED11191163CB002CD7AB /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -301,7 +290,8 @@
 				E4ED7B7B15E79B83002AD912 /* Sources */,
 				E4ED7B7C15E79B83002AD912 /* Frameworks */,
 				E4ED7B7D15E79B83002AD912 /* Resources */,
-				E4C32DDB16023B43002AFAB3 /* CopyFiles */,
+				E4C32DDB16023B43002AFAB3 /* Copy Root Tool */,
+				1B01ED2719123F11002CD7AB /* Set Build Number */,
 			);
 			buildRules = (
 			);
@@ -354,6 +344,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1B01ED2719123F11002CD7AB /* Set Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Set Build Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SRCROOT}\"\nBUILDNUMBER=`git log --pretty=format:'' | wc -l | sed 's/ //g'`\necho \"Build Number: ${BUILDNUMBER}\"\n\nVERSION_FILE=\"${TARGET_BUILD_DIR}/${EXECUTABLE_NAME}.app/Contents/Resources/buildnumber\"\nrm -f \"${VERSION_FILE}\"\nrm -f \"${VERSION_FILE}.svn\"\necho $BUILDNUMBER >> \"${VERSION_FILE}.svn\"\nsed \"s/[[:alpha:]]//g\" \"${VERSION_FILE}.svn\" > \"${VERSION_FILE}\"\nrm -f ${VERSION_FILE}.svn\n\nBUILDNUMBER=`cat \"${VERSION_FILE}\"`\n\nINFOPLIST_FULL_PATH=\"${TARGET_BUILD_DIR}/${EXECUTABLE_NAME}.app/Contents/Info.plist\"\nsed \"s/<string>v[[:digit:]][[:digit:]]*[[:alpha:]]*/<string>${BUILDNUMBER}/\" < \"${INFOPLIST_FULL_PATH}\" > \"${INFOPLIST_FULL_PATH}.versioned\"\nmv \"${INFOPLIST_FULL_PATH}.versioned\" \"${INFOPLIST_FULL_PATH}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1B01ED0F191163CB002CD7AB /* Sources */ = {

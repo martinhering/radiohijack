@@ -137,8 +137,6 @@
                 
                 [self.dataQueue addObject:@{ @"request" : [NSKeyedArchiver archivedDataWithRootObject:request], @"response" : [NSKeyedArchiver archivedDataWithRootObject:response] }];
                 
-                //NSLog(@"request:%@ response:%@", request, response);
-                
                 [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kRHSnifferDidReceiveHTTPTrafficNotification
                                                                                object:@"sniffer"
                                                                              userInfo:nil

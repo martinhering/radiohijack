@@ -124,19 +124,17 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     NSURL* url = request.URL;
     NSString* pathExtension = [[url pathExtension] lowercaseString];
     if ([[self _pathExtensionsToIgnore] containsObject:pathExtension]) {
-        NSLog(@"filted url: %@ (%@)", request.URL, pathExtension);
+        DebugLog(@"filted url: %@ (%@)", request.URL, pathExtension);
         return;
     }
 
-    //NSLog(@"%@ %@", request, response);
-    
     NSDictionary* responseHeaders = [response allHeaderFields];
     NSSet* headerKeys = [NSSet setWithArray:[responseHeaders allKeys]];
     
     NSString* responseContentType = responseHeaders[@"Content-Type"];
     
     if ([[self _mimeCodesToIgnore] containsPrefixOfString:responseContentType]) {
-        NSLog(@"filted url: %@ (%@, %@, %@)", request.URL, responseContentType, [request HTTPMethod], [request allHTTPHeaderFields]);
+        DebugLog(@"filted url: %@ (%@, %@, %@)", request.URL, responseContentType, [request HTTPMethod], [request allHTTPHeaderFields]);
         return;
     }
     
@@ -207,7 +205,7 @@ typedef NS_ENUM(NSInteger, RHResponseType) {
     
     else
     {
-        NSLog(@"unknown request: %@, response: %@", request, response);
+        DebugLog(@"unknown request: %@, response: %@", request, response);
     }
 }
 
