@@ -189,6 +189,11 @@
         self.urlFinder = [RHRadioURLFinder new];
         self.urlFinder.didFindStream = ^(Stream* stream) {
             [weakSelf.arrayController addObject:stream];
+            
+            NSUserNotification* finishedNotification = [[NSUserNotification alloc] init];
+            finishedNotification.title = @"New Stream found.";
+            finishedNotification.subtitle = stream.name;
+            [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:finishedNotification];
         };
         
         
