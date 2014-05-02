@@ -26,6 +26,7 @@
 		1B01ED2119116424002CD7AB /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ED0019111395002CD7AB /* libpcap.dylib */; };
 		1B01ED2219116426002CD7AB /* libtins.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B01ECFE19111352002CD7AB /* libtins.a */; };
 		1B01ED2519122A1D002CD7AB /* Foundation+Extentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B01ED2419122A1D002CD7AB /* Foundation+Extentions.m */; };
+		1B01ED2B1913877B002CD7AB /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B01ED2A1913877B002CD7AB /* Media.xcassets */; };
 		E4AD7AA91608DC4C00F594A2 /* com.vemedio.RadioHijack.Sniffer in Copy Root Tool */ = {isa = PBXBuildFile; fileRef = E4CD036715E7A2C300FDC22C /* com.vemedio.RadioHijack.Sniffer */; };
 		E4C372F815E7D4D4007554D3 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F715E7D4D4007554D3 /* ServiceManagement.framework */; };
 		E4C372FA15E7D4D8007554D3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C372F915E7D4D8007554D3 /* Security.framework */; };
@@ -84,6 +85,7 @@
 		1B01ED17191163CB002CD7AB /* SnifferTest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = SnifferTest.1; sourceTree = "<group>"; };
 		1B01ED2319122A1D002CD7AB /* Foundation+Extentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation+Extentions.h"; sourceTree = "<group>"; };
 		1B01ED2419122A1D002CD7AB /* Foundation+Extentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+Extentions.m"; sourceTree = "<group>"; };
+		1B01ED2A1913877B002CD7AB /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		E456726C15E7E4B80050ECAB /* Uninstall.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = Uninstall.sh; sourceTree = "<group>"; };
 		E4C372E315E7CC10007554D3 /* Sniffer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Info.plist"; sourceTree = "<group>"; };
 		E4C372E415E7CC10007554D3 /* Sniffer-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sniffer-Launchd.plist"; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				1B01ECEA1910D7E1002CD7AB /* InfoPlist.strings */,
 				1B01ECEC1910D7E4002CD7AB /* MainMenu.xib */,
 				1B01ECEF1910D8E6002CD7AB /* RadioHijack-Prefix.pch */,
+				1B01ED2A1913877B002CD7AB /* Media.xcassets */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 			files = (
 				1B01ECEB1910D7E1002CD7AB /* InfoPlist.strings in Resources */,
 				1B01ECED1910D7E4002CD7AB /* MainMenu.xib in Resources */,
+				1B01ED2B1913877B002CD7AB /* Media.xcassets in Resources */,
 				1B01ECF519110743002CD7AB /* Sniffer-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -644,6 +648,7 @@
 				1B01ED1A191163CB002CD7AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E4CD036E15E7A2C300FDC22C /* Build configuration list for PBXNativeTarget "Sniffer" */ = {
 			isa = XCConfigurationList;

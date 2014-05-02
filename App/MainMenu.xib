@@ -468,6 +468,13 @@
                             <binding destination="8T2-E7-KA0" name="enabled" keyPath="selection.@count" id="DKb-cz-cAC"/>
                         </connections>
                     </button>
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="rYX-Vq-b9R">
+                        <rect key="frame" x="148" y="22" width="16" height="16"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <connections>
+                            <binding destination="373" name="animate" keyPath="hijacking" id="bdT-ag-KZN"/>
+                        </connections>
+                    </progressIndicator>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="gIU-Ug-iAR" secondAttribute="trailing" constant="-1" id="2Ze-ja-aPo"/>
@@ -477,10 +484,12 @@
                     <constraint firstItem="Sfy-gt-x7J" firstAttribute="leading" secondItem="368" secondAttribute="leading" constant="20" id="8Fu-PW-gCI"/>
                     <constraint firstAttribute="bottom" secondItem="Sfy-gt-x7J" secondAttribute="bottom" constant="20" id="916-vm-M06"/>
                     <constraint firstItem="Sfy-gt-x7J" firstAttribute="top" secondItem="gIU-Ug-iAR" secondAttribute="bottom" constant="20" id="CTg-NL-snj"/>
+                    <constraint firstAttribute="bottom" secondItem="rYX-Vq-b9R" secondAttribute="bottom" constant="22" id="HL0-Ax-Fpq"/>
+                    <constraint firstItem="rYX-Vq-b9R" firstAttribute="leading" secondItem="Sfy-gt-x7J" secondAttribute="trailing" constant="8" id="NZO-vK-xiS"/>
                     <constraint firstAttribute="trailing" secondItem="ngf-wb-J7Q" secondAttribute="trailing" constant="20" id="Rjg-At-RcH"/>
                     <constraint firstItem="Sfy-gt-x7J" firstAttribute="top" secondItem="gIU-Ug-iAR" secondAttribute="bottom" constant="20" id="cni-Wd-cvT"/>
-                    <constraint firstItem="ngf-wb-J7Q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Sfy-gt-x7J" secondAttribute="trailing" constant="20" id="hcc-PE-nCt"/>
                     <constraint firstItem="gIU-Ug-iAR" firstAttribute="top" secondItem="368" secondAttribute="top" constant="-1" id="uoj-Yj-qOe"/>
+                    <constraint firstItem="ngf-wb-J7Q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="rYX-Vq-b9R" secondAttribute="trailing" constant="20" id="vAS-rm-Sbr"/>
                 </constraints>
             </view>
         </window>

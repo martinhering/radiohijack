@@ -12,6 +12,7 @@
 @property (atomic, strong, readwrite) NSXPCConnection * helperToolConnection;
 @property (atomic) BOOL hijacking;
 @property (atomic, strong) RHRadioURLFinder* urlFinder;
+@property (atomic, strong) NSStatusItem* statusItem;
 @end
 
 @implementation AppDelegate {
@@ -49,12 +50,56 @@
                                                         selector:@selector(snifferDidReceiveHTTPTrafficNotification:)
                                                             name:kRHSnifferDidReceiveHTTPTrafficNotification
                                                           object:nil];
+    
+    NSStatusBar *bar = [NSStatusBar systemStatusBar];
+    NSStatusItem* statusItem = [bar statusItemWithLength:NSVariableStatusItemLength];
+    statusItem.target = self;
+    statusItem.action = @selector(resetStatusItemColor:);
+    self.statusItem = statusItem;
+    [self _setStatusItemHasMenu:YES];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
-    #pragma unused(sender)
+#pragma unused(sender)
     return YES;
+}
+
+
+- (void) resetStatusItemColor:(id)sender
+{
+    #pragma unused(sender)
+    [self _setStatusItemHasMenu:YES];
+}
+
+- (BOOL) validateMenuItem:(NSMenuItem *)menuItem
+{
+    if (menuItem.action == @selector(toggleHijacking:)) {
+        menuItem.title = self.stopButtonTitle;
+    }
+    return YES;
+}
+
+- (void) _setStatusItemHasMenu:(BOOL)flag
+{
+    NSStatusItem* statusItem = self.statusItem;
+    
+    if (flag) {
+        NSMenu* statusItemMenu = [NSMenu new];
+        NSMenuItem* item = [statusItemMenu addItemWithTitle:@"Start Hijacking" action:@selector(toggleHijacking:) keyEquivalent:@""];
+        item.target = self;
+        
+        statusItem.menu = statusItemMenu;
+        statusItem.highlightMode = YES;
+        statusItem.image = [NSImage imageNamed:@"StatusItemNormal"];
+        statusItem.alternateImage = [NSImage imageNamed:@"StatusItemHighlight"];
+    }
+    else {
+        statusItem.menu = nil;
+        statusItem.highlightMode = NO;
+        statusItem.image = [NSImage imageNamed:@"StatusItemActive"];
+        statusItem.alternateImage = nil;
+    }
 }
 
 #pragma mark -
@@ -194,6 +239,8 @@
             finishedNotification.title = @"New Stream found.";
             finishedNotification.subtitle = stream.name;
             [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:finishedNotification];
+            
+            [weakSelf _setStatusItemHasMenu:NO];
         };
         
         
